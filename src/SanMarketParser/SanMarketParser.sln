@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SanMarketParser", "SanMarke
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SanMarketParserDatabase", "..\SanMarketParserDatabase\SanMarketParserDatabase.sqlproj", "{EEBF7B3A-CB2B-4080-A806-AFEF3E87D3F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SanMarketAPI", "SanMarketAPI\SanMarketAPI.csproj", "{9B64541C-307B-4C8D-B111-ECE4C54378D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SanMarketAPI", "..\SanMarketAPI\SanMarketAPI.csproj", "{17AE53DD-A44F-46CD-87C2-585D742E76DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +25,10 @@ Global
 		{EEBF7B3A-CB2B-4080-A806-AFEF3E87D3F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEBF7B3A-CB2B-4080-A806-AFEF3E87D3F1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EEBF7B3A-CB2B-4080-A806-AFEF3E87D3F1}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{9B64541C-307B-4C8D-B111-ECE4C54378D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9B64541C-307B-4C8D-B111-ECE4C54378D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9B64541C-307B-4C8D-B111-ECE4C54378D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9B64541C-307B-4C8D-B111-ECE4C54378D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17AE53DD-A44F-46CD-87C2-585D742E76DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17AE53DD-A44F-46CD-87C2-585D742E76DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17AE53DD-A44F-46CD-87C2-585D742E76DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17AE53DD-A44F-46CD-87C2-585D742E76DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

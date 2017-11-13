@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace SanMarketAPI
 {
+    /// <summary>
+    /// Базовый класс доступа к сайту
+    /// </summary>
     public class Site
     {
+        /// <summary>
+        /// Адрес сайта
+        /// </summary>
+        public const string BASE_URL = @"http://www.sanmarket.ru";
     }
 }
