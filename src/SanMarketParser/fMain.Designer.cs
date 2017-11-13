@@ -32,13 +32,13 @@
             this.bExport = new System.Windows.Forms.Button();
             this.bAll = new System.Windows.Forms.Button();
             this.bCancel = new System.Windows.Forms.Button();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tcMain = new System.Windows.Forms.TabControl();
             this.tpEvents = new System.Windows.Forms.TabPage();
             this.tpSettings = new System.Windows.Forms.TabPage();
             this.tbEvents = new System.Windows.Forms.TextBox();
             this.lbExportPath = new System.Windows.Forms.Label();
             this.tbExportPath = new System.Windows.Forms.TextBox();
-            this.tabControl1.SuspendLayout();
+            this.tcMain.SuspendLayout();
             this.tpEvents.SuspendLayout();
             this.tpSettings.SuspendLayout();
             this.SuspendLayout();
@@ -51,6 +51,7 @@
             this.bImport.TabIndex = 0;
             this.bImport.Text = "Импорт товаров";
             this.bImport.UseVisualStyleBackColor = true;
+            this.bImport.Click += new System.EventHandler(this.bImport_Click);
             // 
             // bExport
             // 
@@ -69,25 +70,31 @@
             this.bAll.TabIndex = 2;
             this.bAll.Text = "Выполнить Всё";
             this.bAll.UseVisualStyleBackColor = true;
+            this.bAll.Visible = false;
             // 
             // bCancel
             // 
+            this.bCancel.Enabled = false;
             this.bCancel.Location = new System.Drawing.Point(12, 99);
             this.bCancel.Name = "bCancel";
             this.bCancel.Size = new System.Drawing.Size(145, 23);
             this.bCancel.TabIndex = 3;
             this.bCancel.Text = "Отмена";
             this.bCancel.UseVisualStyleBackColor = true;
+            this.bCancel.Click += new System.EventHandler(this.bCancel_Click);
             // 
-            // tabControl1
+            // tcMain
             // 
-            this.tabControl1.Controls.Add(this.tpEvents);
-            this.tabControl1.Controls.Add(this.tpSettings);
-            this.tabControl1.Location = new System.Drawing.Point(163, 12);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(554, 360);
-            this.tabControl1.TabIndex = 4;
+            this.tcMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tcMain.Controls.Add(this.tpEvents);
+            this.tcMain.Controls.Add(this.tpSettings);
+            this.tcMain.Location = new System.Drawing.Point(163, 12);
+            this.tcMain.Name = "tcMain";
+            this.tcMain.SelectedIndex = 0;
+            this.tcMain.Size = new System.Drawing.Size(554, 372);
+            this.tcMain.TabIndex = 4;
             // 
             // tpEvents
             // 
@@ -95,7 +102,7 @@
             this.tpEvents.Location = new System.Drawing.Point(4, 22);
             this.tpEvents.Name = "tpEvents";
             this.tpEvents.Padding = new System.Windows.Forms.Padding(3);
-            this.tpEvents.Size = new System.Drawing.Size(546, 334);
+            this.tpEvents.Size = new System.Drawing.Size(546, 346);
             this.tpEvents.TabIndex = 0;
             this.tpEvents.Text = "Журнал событий";
             this.tpEvents.UseVisualStyleBackColor = true;
@@ -119,7 +126,7 @@
             this.tbEvents.Multiline = true;
             this.tbEvents.Name = "tbEvents";
             this.tbEvents.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbEvents.Size = new System.Drawing.Size(540, 328);
+            this.tbEvents.Size = new System.Drawing.Size(540, 340);
             this.tbEvents.TabIndex = 0;
             // 
             // lbExportPath
@@ -142,8 +149,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(729, 384);
-            this.Controls.Add(this.tabControl1);
+            this.ClientSize = new System.Drawing.Size(729, 396);
+            this.Controls.Add(this.tcMain);
             this.Controls.Add(this.bCancel);
             this.Controls.Add(this.bAll);
             this.Controls.Add(this.bExport);
@@ -153,7 +160,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Парсинг товаров сайта SanMarket.ru";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.fMain_FormClosing);
-            this.tabControl1.ResumeLayout(false);
+            this.tcMain.ResumeLayout(false);
             this.tpEvents.ResumeLayout(false);
             this.tpEvents.PerformLayout();
             this.tpSettings.ResumeLayout(false);
@@ -168,7 +175,7 @@
         private System.Windows.Forms.Button bExport;
         private System.Windows.Forms.Button bAll;
         private System.Windows.Forms.Button bCancel;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl tcMain;
         private System.Windows.Forms.TabPage tpEvents;
         private System.Windows.Forms.TextBox tbEvents;
         private System.Windows.Forms.TabPage tpSettings;

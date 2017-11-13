@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SanMarketAPI;
 
 namespace SanMarketParser
 {
@@ -18,17 +19,54 @@ namespace SanMarketParser
         public ParserSettings CurrentSettings { get; set; }
 
         /// <summary>
+        /// Класс управления парсингом
+        /// </summary>
+        public SiteWorker Worker { get { return SiteWorker.CURRENT_INSTANCE; } }
+
+        /// <summary>
         /// Конструктор формы
         /// </summary>
         public fMain()
         {
             InitializeComponent();
 
+            // Инициализация журнала событий
+            tbEvents.Text = "";
+            Log(@"Инициализация");
+
             // Инициализация настроек
             CurrentSettings = ParserSettings.GetSettings();
 
             // Установка параметров из настроек
             tbExportPath.Text = CurrentSettings.ExportPath;
+
+            // Подключение событий парсера
+            Worker.OnParsingCompleted += Worker_OnParsingCompleted;
+            Worker.OnLogChanged += Worker_OnLogChanged;
+        }
+
+        /// <summary>
+        /// Обработка изменений в журнале объекта управления парсингом
+        /// </summary>
+        /// <param name="__sender"></param>
+        /// <param name="__logMessage"></param>
+        private void Worker_OnLogChanged(SiteWorker __sender, string __logMessage)
+        {
+            Log(__logMessage);
+        }
+
+        /// <summary>
+        /// Обработка события завершения парсинга
+        /// </summary>
+        /// <param name="obj"></param>
+        private void Worker_OnParsingCompleted(SiteWorker obj)
+        {
+            bImport.Enabled = true;
+            bExport.Enabled = true;
+            bAll.Enabled = true;
+            bCancel.Enabled = false;
+
+            Log(@"Парсинг товаров завершён");
         }
 
         /// <summary>
@@ -48,6 +86,47 @@ namespace SanMarketParser
                 // Сохранение настроек
                 senderForm.CurrentSettings.SaveSettings();
             }
+        }
+
+        /// <summary>
+        /// Запуск процедуры парсинга с сайта источника
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void bImport_Click(object sender, EventArgs e)
+        {
+            if (!Worker.IsActive)
+            {
+                bImport.Enabled = false;
+                bExport.Enabled = false;
+                bAll.Enabled = false;
+                bCancel.Enabled = true;
+
+                Worker.Start();
+            }
+        }
+
+        /// <summary>
+        /// Запись событий в журнал
+        /// </summary>
+        /// <param name="__messageText">Текст описания события</param>
+        private void Log(string __messageText)
+        {
+            tbEvents.Text = DateTime.Now.ToLocalTime() + @" - " +
+                __messageText +
+                Environment.NewLine +
+                tbEvents.Text;
+        }
+
+        /// <summary>
+        /// Обработка нажатия кнопки отмены
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void bCancel_Click(object sender, EventArgs e)
+        {
+            if (Worker.IsActive)
+                Worker.Stop();
         }
     }
 }

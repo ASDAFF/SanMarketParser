@@ -14,7 +14,7 @@ namespace SanMarketAPI
         /// <summary>
         /// Загрузчик страницы
         /// </summary>
-        protected PageLoader _loader;
+        public PageLoader Loader { get; set; }
 
         /// <summary>
         /// Ссылка на страницу текущего объекта
@@ -29,7 +29,7 @@ namespace SanMarketAPI
             Url = "";
 
             // Инициализация загрузчика станицы
-            _loader = new PageLoader();
+            Loader = new PageLoader();
         }
 
     }
