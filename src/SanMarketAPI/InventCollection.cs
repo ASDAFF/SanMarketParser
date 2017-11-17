@@ -68,7 +68,11 @@ namespace SanMarketAPI
                                     string catalogItemUrl = Site.PrepareUrl(catalogItemAnchor.Href.Trim());
                                     InventItem inventItem = new InventItem(group, catalogItemUrl);
                                     if (await inventItem.FillByUrl())
+                                    {
+                                        if (inventCollection.Items.Count > 200)
+                                            inventCollection = new InventCollection();
                                         inventCollection.Items.Add(inventItem);
+                                    }
                                 }
                             }
 

@@ -112,6 +112,9 @@ namespace SanMarketParser
         /// <param name="__messageText">Текст описания события</param>
         private void Log(string __messageText)
         {
+            if (tbEvents.Text.Length > 8192)
+                tbEvents.Text = "";
+
             tbEvents.Text = DateTime.Now.ToLocalTime() + @" - " +
                 __messageText +
                 Environment.NewLine +
