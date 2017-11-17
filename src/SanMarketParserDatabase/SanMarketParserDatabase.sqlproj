@@ -58,4 +58,13 @@
   <ItemGroup>
     <Folder Include="Properties" />
   </ItemGroup>
+  <ItemGroup>
+    <Build Include="tGroups.sql" />
+    <Build Include="tInventItems.sql" />
+    <Build Include="tInventImages.sql" />
+    <Build Include="tInventOptions.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="SanMarketParserDatabase.refactorlog" />
+  </ItemGroup>
 </Project>

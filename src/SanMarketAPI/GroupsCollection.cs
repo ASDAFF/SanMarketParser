@@ -81,6 +81,7 @@ namespace SanMarketAPI
 
                                 Group groupItem = new Group(categoryName, Site.PrepareUrl(catalogAnchor.Href.Trim()));
                                 groupsCollection.Groups.Add(groupItem); // Добавление корневой группы
+                                groupItem.RegisterGroup();
 
                                 // Загрузка дочерних групп
                                 GroupsCollection subgroupsCollection = await groupItem.GetSubgroupsCollection();
@@ -89,6 +90,9 @@ namespace SanMarketAPI
                         }
                     }
                 }
+
+                // Обновление уровней подчинённости в таблице групп
+                groupsCollection.UpdateDBParents();
             }
             else
             {
@@ -98,6 +102,38 @@ namespace SanMarketAPI
             }
 
             return groupsCollection;
+        }
+
+        /// <summary>
+        /// Обновление уровней подчинённости в таблице групп
+        /// </summary>
+        public void UpdateDBParents()
+        {
+            if (Groups.Count > 0)
+            {
+                dsParserTableAdapters.tGroupsTableAdapter ta = new dsParserTableAdapters.tGroupsTableAdapter();
+                dsParser.tGroupsDataTable tbl;
+                dsParser.tGroupsRow row;
+
+                foreach (Group item in this)
+                {
+                    tbl = ta.GetDataByUrl(item.Url);
+                    if (tbl.Rows.Count > 0)
+                    {
+                        row = (dsParser.tGroupsRow)tbl.Rows[0];
+
+                        // Определение значения идентификатора группы родителя
+                        int newParent = item.ParentId;
+
+                        // Установка ИД. родительской группы
+                        if (row.ParentId != newParent)
+                        {
+                            row.ParentId = (int)newParent;
+                            ta.Update(tbl);
+                        }
+                    }
+                }
+            }
         }
 
 #region Реализация Интерфейса Коллекции

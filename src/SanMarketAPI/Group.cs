@@ -15,12 +15,57 @@ namespace SanMarketAPI
         /// <summary>
         /// Наименование группы товаров
         /// </summary>
-        public string Name { get; set; }
+        public string Name
+        {
+            get { return _name; }
+
+            set { _name = value.Trim().Replace(@"&nbsp;", " "); }
+        }
+        public string _name;
+
+        /// <summary>
+        /// Извлекает ИД группы из БД
+        /// </summary>
+        public int Id
+        {
+            get
+            {
+                dsParserTableAdapters.tGroupsTableAdapter ta = new dsParserTableAdapters.tGroupsTableAdapter();
+                int? resId = ta.GetIdByUrl(Url);
+                if (resId == null)
+                    resId = -1;
+
+                return (int)resId;
+            }
+        }
 
         /// <summary>
         /// Родительская группа товаров
         /// </summary>
         public Group Parent { get; set; }
+
+        /// <summary>
+        /// Извлекает ИД группы родителя из БД
+        /// </summary>
+        public int ParentId
+        {
+            get
+            {
+                dsParserTableAdapters.tGroupsTableAdapter ta = new dsParserTableAdapters.tGroupsTableAdapter();
+                int? newParent;
+
+                if (Parent != null)
+                {
+                    newParent = ta.GetIdByUrl(Parent.Url);
+                    if (newParent == null)
+                        newParent = -1;
+                }
+                else
+                    newParent = -1;
+
+                return (int)newParent;
+            }
+        }
 
         /// <summary>
         /// Основной конструктор
@@ -78,6 +123,7 @@ namespace SanMarketAPI
 
                                 Group groupItem = new Group(categoryName, subUrl, this);
                                 groupsCollection.Groups.Add(groupItem);
+                                groupItem.RegisterGroup();
                             }
                         }
                     }
@@ -87,6 +133,35 @@ namespace SanMarketAPI
             return groupsCollection;
         }
 
+        /// <summary>
+        /// Регистрация группы товаров в БД
+        /// </summary>
+        public void RegisterGroup()
+        {
+            dsParserTableAdapters.tGroupsTableAdapter ta = new dsParserTableAdapters.tGroupsTableAdapter();
+            dsParser.tGroupsDataTable tbl = ta.GetDataByUrl(Url.Trim());
+            dsParser.tGroupsRow row;
+
+            if (tbl.Rows.Count > 0)
+                row = (dsParser.tGroupsRow)tbl.Rows[0];
+            else
+            {
+                row = tbl.NewtGroupsRow();
+                row.Url = Url;
+            }
+
+            row.Name = Name;
+
+            if (row.RowState == System.Data.DataRowState.Detached)
+                tbl.Rows.Add(row);
+
+            ta.Update(tbl);
+        }
+
+        /// <summary>
+        /// Строковое представление группы товаров
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return Name;

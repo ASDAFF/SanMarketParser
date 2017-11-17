@@ -16,6 +16,11 @@ namespace SanMarketAPI
         /// </summary>
         public const string BASE_URL = @"http://www.sanmarket.ru";
 
+        /// <summary>
+        /// Обработка ссылки к глобальному представлению
+        /// </summary>
+        /// <param name="__url"></param>
+        /// <returns>Глобальный текст ссылки</returns>
         public static string PrepareUrl(string __url)
         {
             string pattern = @"^about\:\/\/\/";

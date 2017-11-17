@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="cfe2cadd-5b69-43e2-8a73-a17bb8e803c0" ChangeDateTime="11/17/2017 17:06:07">
+    <Property Name="ElementName" Value="[dbo].[tGroups].[IX_tGroups_Column]" />
+    <Property Name="ElementType" Value="SqlIndex" />
+    <Property Name="ParentElementName" Value="[dbo].[tGroups]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[IX_tGroups_Url]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="84d30c97-1a9c-4135-bfb9-caecb3e9da6e" ChangeDateTime="11/17/2017 18:15:11">
+    <Property Name="ElementName" Value="[dbo].[tInventItems].[IX_tInventItems_Column]" />
+    <Property Name="ElementType" Value="SqlIndex" />
+    <Property Name="ParentElementName" Value="[dbo].[tInventItems]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[IX_tInventItems_Url]" />
+  </Operation>
+</Operations>

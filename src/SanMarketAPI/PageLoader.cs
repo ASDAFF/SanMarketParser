@@ -21,7 +21,7 @@ namespace SanMarketAPI
         /// Множественные попытки необходимы в связи с тем, что сайт источник
         /// работает отвратительно и регулярно падает в ошибки.
         /// </summary>
-        public const int MAX_ATTEMPTS = 10;
+        public const int MAX_ATTEMPTS = 25;
 
         /// <summary>
         /// Адрес, из которого должна быть выполнена загрузка

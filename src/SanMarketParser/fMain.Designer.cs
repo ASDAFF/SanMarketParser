@@ -125,6 +125,7 @@
             this.tbEvents.Location = new System.Drawing.Point(3, 3);
             this.tbEvents.Multiline = true;
             this.tbEvents.Name = "tbEvents";
+            this.tbEvents.ReadOnly = true;
             this.tbEvents.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbEvents.Size = new System.Drawing.Size(540, 340);
             this.tbEvents.TabIndex = 0;
