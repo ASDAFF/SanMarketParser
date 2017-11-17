@@ -76,6 +76,9 @@ namespace SanMarketAPI
         public async Task<bool> LoadPageAsync(string __url)
         {
             int attemptsRemain = MAX_ATTEMPTS;
+            int attemptsAmount;
+            string logMessage;
+
             ResetData();
 
             Url = __url;
@@ -99,25 +102,48 @@ namespace SanMarketAPI
             {
                 // Пауза при неудачной попытке
                 if (attemptsRemain < MAX_ATTEMPTS)
+                {
+                    attemptsAmount = MAX_ATTEMPTS - attemptsRemain;
+                    logMessage = @"Повторная загрузка страницы {0} - {1}/{2}: Error";
+                    SiteWorker.CURRENT_INSTANCE.Log = String.Format(logMessage,
+                        Url,
+                        attemptsAmount.ToString(),
+                        MAX_ATTEMPTS.ToString());
                     await Task.Delay(15000);
+                }
                 attemptsRemain--;
 
                 // Загрузка
                 try
                 {
                     response = await client.GetAsync(Url);
-                    if (response != null && response.StatusCode == HttpStatusCode.OK)
+                    if (response != null)
                     {
-                        Source = await response.Content.ReadAsStringAsync();
-                        Document = await DomParser.ParseAsync(Source);
-                        Success = true;
+                        attemptsAmount = MAX_ATTEMPTS - attemptsRemain;
+                        switch (response.StatusCode)
+                        {
+                            case HttpStatusCode.OK:
+                                Source = await response.Content.ReadAsStringAsync();
+                                Document = await DomParser.ParseAsync(Source);
+                                Success = true;
 
-                        int attemptsAmount = MAX_ATTEMPTS - attemptsRemain;
-                        string logMessage = @"Загрузка страницы {0} - {1}/{2}: Ok";
-                        SiteWorker.CURRENT_INSTANCE.Log = String.Format(logMessage, 
-                            Url, 
-                            attemptsAmount.ToString(),
-                            MAX_ATTEMPTS.ToString());
+                                logMessage = @"Загрузка страницы {0} - {1}/{2}: Ok";
+                                SiteWorker.CURRENT_INSTANCE.Log = String.Format(logMessage,
+                                    Url,
+                                    attemptsAmount.ToString(),
+                                    MAX_ATTEMPTS.ToString());
+                                break;
+
+                            case HttpStatusCode.Moved:
+                                attemptsRemain = MAX_ATTEMPTS;
+                                Url = response.Headers.Location.AbsoluteUri;
+                                logMessage = @"Перемещена страница {0} - {1}/{2}: Moved";
+                                SiteWorker.CURRENT_INSTANCE.Log = String.Format(logMessage,
+                                    Url,
+                                    attemptsAmount.ToString(),
+                                    MAX_ATTEMPTS.ToString());
+                                break;
+                        }
                     }
                 } catch { }
             }
