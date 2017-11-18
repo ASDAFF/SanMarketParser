@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
+using System.Configuration;
 
 namespace SanMarketAPI
 {
@@ -29,6 +31,26 @@ namespace SanMarketAPI
             string res = regex.Replace(__url, BASE_URL + @"/");
 
             return res;
+        }
+
+        /// <summary>
+        /// Создаёт от открывает новое соединение с БД
+        /// </summary>
+        /// <returns></returns>
+        public static SqlConnection GetDatabaseConnection()
+        {
+            SqlConnection cnt = null;
+
+            try
+            {
+                dsParserTableAdapters.tInventItemsTableAdapter ta = new dsParserTableAdapters.tInventItemsTableAdapter();
+                string connectionString = ta.Connection.ConnectionString;
+                cnt = new SqlConnection(connectionString);
+                cnt.Open();
+            }
+            catch { cnt = null; }
+
+            return cnt;
         }
     }
 }

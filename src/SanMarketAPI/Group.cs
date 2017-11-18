@@ -30,14 +30,20 @@ namespace SanMarketAPI
         {
             get
             {
-                dsParserTableAdapters.tGroupsTableAdapter ta = new dsParserTableAdapters.tGroupsTableAdapter();
-                int? resId = ta.GetIdByUrl(Url);
-                if (resId == null)
-                    resId = -1;
+                if (_id == -1)
+                {
+                    dsParserTableAdapters.tGroupsTableAdapter ta = new dsParserTableAdapters.tGroupsTableAdapter();
+                    int? resId = ta.GetIdByUrl(Url);
+                    if (resId == null)
+                        resId = -1;
+                    else
+                        _id = (int)resId;
+                }
 
-                return (int)resId;
+                return _id;
             }
         }
+        private int _id;
 
         /// <summary>
         /// Родительская группа товаров
@@ -74,6 +80,7 @@ namespace SanMarketAPI
         {
             Name = "";
             Parent = null;
+            _id = -1;
         }
 
         public Group(string __name, string __url) : this()
@@ -85,6 +92,26 @@ namespace SanMarketAPI
         public Group(string __name, string __url, Group __parent) : this(__name, __url)
         {
             Parent = __parent;
+        }
+
+        /// <summary>
+        /// Создание класса группы из БД по идентификатору
+        /// </summary>
+        /// <param name="__id"></param>
+        public Group(int __id) : this()
+        {
+            dsParserTableAdapters.tGroupsTableAdapter ta = new dsParserTableAdapters.tGroupsTableAdapter();
+            dsParser.tGroupsDataTable tbl = ta.GetDataById(__id);
+
+            if (tbl.Rows.Count > 0)
+            {
+                dsParser.tGroupsRow row = (dsParser.tGroupsRow)tbl.Rows[0];
+
+                _id = row.Id;
+                Parent = new Group(row.ParentId);
+                Name = row.Name;
+                Url = row.Url;
+            }
         }
 
         /// <summary>

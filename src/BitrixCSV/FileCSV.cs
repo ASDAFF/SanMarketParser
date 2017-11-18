@@ -29,6 +29,11 @@ namespace BitrixCSV
         public FileInfo FileInstance { get; set; }
 
         /// <summary>
+        /// Поток для записи файла
+        /// </summary>
+        public StreamWriter FileWriter { get; set; }
+
+        /// <summary>
         /// Глобальный экземпляр доступа к файлу обмена данными
         /// </summary>
         public static FileCSV INSTANCE
@@ -64,11 +69,24 @@ namespace BitrixCSV
                 if (FileInstance.Exists)
                     FileInstance.Delete();
 
+                // Открытие потока
+                FileWriter = new StreamWriter(File.Open(FileInstance.FullName, FileMode.Create), new UTF8Encoding(false));
+                FileWriter.WriteLine(FileRow.FileHeaderString());
+
                 res = true;
 
             } catch { }
 
             return res;
+        }
+
+        /// <summary>
+        /// Closing the export file
+        /// </summary>
+        public void CloseFile()
+        {
+            try { FileWriter.Close(); }
+            catch { }
         }
 
         

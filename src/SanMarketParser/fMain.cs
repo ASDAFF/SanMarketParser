@@ -11,6 +11,8 @@ using SanMarketAPI;
 
 namespace SanMarketParser
 {
+    delegate void EventLogDelegate(string __messageText);
+
     public partial class fMain : Form
     {
         /// <summary>
@@ -145,13 +147,22 @@ namespace SanMarketParser
         /// <param name="__messageText">Текст описания события</param>
         private void Log(string __messageText)
         {
-            if (tbEvents.Text.Length > 8192)
-                tbEvents.Text = "";
 
-            tbEvents.Text = DateTime.Now.ToLocalTime() + @" - " +
-                __messageText +
-                Environment.NewLine +
-                tbEvents.Text;
+            if (tbEvents.InvokeRequired)
+            {
+                EventLogDelegate elg = new EventLogDelegate(Log);
+                this.Invoke(elg, new object[] { __messageText });
+            }
+            else
+            {
+                if (tbEvents.Text.Length > 8192)
+                    tbEvents.Text = "";
+
+                tbEvents.Text = DateTime.Now.ToLocalTime() + @" - " +
+                    __messageText +
+                    Environment.NewLine +
+                    tbEvents.Text;
+            }
         }
 
         /// <summary>
@@ -163,6 +174,9 @@ namespace SanMarketParser
         {
             if (Worker.IsActive)
                 Worker.Stop();
+
+            if (ExportWorker.IsActive)
+                ExportWorker.Stop();
         }
 
         /// <summary>

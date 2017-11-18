@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="FileCSV.cs" />
     <Compile Include="FileRow.cs" />
+    <Compile Include="ImageResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
