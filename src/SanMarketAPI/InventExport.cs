@@ -117,11 +117,13 @@ namespace SanMarketAPI
 
                         exportRow = new FileRow();
                         exportRow.XmlId = (int)rdrInvent["Id"];
-                        exportRow.Name = rdrInvent["Name"].ToString();
-                        exportRow.PreviewText = rdrInvent["ShortDescr"].ToString();
-                        exportRow.DetailText = rdrInvent["Descr"].ToString();
+                        exportRow.Name = rdrInvent["Name"].ToString().Replace(";", " ");
+                        exportRow.PreviewText = rdrInvent["ShortDescr"].ToString().Replace(";", " ").Replace("\n", " ").Replace("\r", " ");
+                        exportRow.DetailText = rdrInvent["Descr"].ToString().Replace(";", " ").Replace("\n", " ").Replace("\r", " ");
                         exportRow.ArtNumber = @"SMR-" + rdrInvent["Id"].ToString().Trim();
                         exportRow.Price = (decimal)rdrInvent["Price"];
+
+                        FillOptions(ref exportRow);
 
                         FillGroups(ref exportRow, (int)rdrInvent["ParentId"]);
 
@@ -174,6 +176,34 @@ namespace SanMarketAPI
             }
 
             return imgList;
+        }
+
+        /// <summary>
+        /// Заполнение списка характеристик товара
+        /// </summary>
+        /// <param name="__row"></param>
+        private void FillOptions(ref FileRow __row)
+        {
+            dsParserTableAdapters.tInventOptionsTableAdapter ta = new dsParserTableAdapters.tInventOptionsTableAdapter();
+            dsParser.tInventOptionsDataTable tbl = ta.GetDataByInventItemId(__row.XmlId);
+
+            if (tbl.Rows.Count > 0)
+            {
+                // Блок характеристик добавляется только при условии наличия характеристик
+                string srcCode = "";
+                foreach (dsParser.tInventOptionsRow row in tbl)
+                    if (row.Name.Trim() != string.Empty && row.Value.Trim() != string.Empty)
+                        srcCode += row.Name.Trim().Replace(";", " ").Replace("\n", " ").Replace("\r", " ") + 
+                            @": " + 
+                            row.Value.Trim().Replace(";", " ").Replace("\n", " ").Replace("\r", " ") + 
+                            @", ";
+
+                if (srcCode.Length > 0)
+                {
+                    __row.DetailText += @" Характеристики: " + srcCode;
+                }
+                        
+            }
         }
 
         /// <summary>
