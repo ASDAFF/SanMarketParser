@@ -24,6 +24,11 @@ namespace SanMarketParser
         public SiteWorker Worker { get { return SiteWorker.CURRENT_INSTANCE; } }
 
         /// <summary>
+        /// Класс управления экспортом данных
+        /// </summary>
+        public InventExport ExportWorker { get { return InventExport.INSTANCE; } }
+
+        /// <summary>
         /// Конструктор формы
         /// </summary>
         public fMain()
@@ -43,6 +48,34 @@ namespace SanMarketParser
             // Подключение событий парсера
             Worker.OnParsingCompleted += Worker_OnParsingCompleted;
             Worker.OnLogChanged += Worker_OnLogChanged;
+
+            // Подключение событий экспортера данных
+            ExportWorker.OnExportCompleted += ExportWorker_OnExportCompleted;
+            ExportWorker.OnLogChanged += ExportWorker_OnLogChanged;
+        }
+
+        /// <summary>
+        /// Обработка события завершения экспорта товаров
+        /// </summary>
+        /// <param name="__sender"></param>
+        private void ExportWorker_OnExportCompleted(InventExport __sender)
+        {
+            bImport.Enabled = true;
+            bExport.Enabled = true;
+            bAll.Enabled = true;
+            bCancel.Enabled = false;
+
+            Log(@"Экспорт товаров завершён");
+        }
+
+        /// <summary>
+        /// Обработка изменений в журнале объекта управления экспортом товаров
+        /// </summary>
+        /// <param name="__sender"></param>
+        /// <param name="__logMessage"></param>
+        private void ExportWorker_OnLogChanged(WorkerBase __sender, string __logMessage)
+        {
+            Log(__logMessage);
         }
 
         /// <summary>
@@ -50,7 +83,7 @@ namespace SanMarketParser
         /// </summary>
         /// <param name="__sender"></param>
         /// <param name="__logMessage"></param>
-        private void Worker_OnLogChanged(SiteWorker __sender, string __logMessage)
+        private void Worker_OnLogChanged(WorkerBase __sender, string __logMessage)
         {
             Log(__logMessage);
         }
@@ -130,6 +163,24 @@ namespace SanMarketParser
         {
             if (Worker.IsActive)
                 Worker.Stop();
+        }
+
+        /// <summary>
+        /// Запуск процедуры экспорта товаров
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void bExport_Click(object sender, EventArgs e)
+        {
+            if (!ExportWorker.IsActive)
+            {
+                bImport.Enabled = false;
+                bExport.Enabled = false;
+                bAll.Enabled = false;
+                bCancel.Enabled = true;
+
+                ExportWorker.ExportData(tbExportPath.Text);
+            }
         }
     }
 }

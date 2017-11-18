@@ -51,6 +51,7 @@
     <Compile Include="Group.cs" />
     <Compile Include="GroupsCollection.cs" />
     <Compile Include="InventCollection.cs" />
+    <Compile Include="InventExport.cs" />
     <Compile Include="InventItem.cs" />
     <Compile Include="InventItemOption.cs" />
     <Compile Include="PageLoader.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Site.cs" />
     <Compile Include="SitePage.cs" />
     <Compile Include="SiteWorker.cs" />
+    <Compile Include="WorkerBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -82,6 +84,12 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BitrixCSV\BitrixCSV.csproj">
+      <Project>{c5f2d21c-5e96-4542-990b-39f85e86e99c}</Project>
+      <Name>BitrixCSV</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

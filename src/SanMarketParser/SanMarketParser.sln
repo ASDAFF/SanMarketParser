@@ -9,6 +9,8 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SanMarketParserDatabase", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SanMarketAPI", "..\SanMarketAPI\SanMarketAPI.csproj", "{17AE53DD-A44F-46CD-87C2-585D742E76DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitrixCSV", "..\BitrixCSV\BitrixCSV.csproj", "{C5F2D21C-5E96-4542-990B-39F85E86E99C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{17AE53DD-A44F-46CD-87C2-585D742E76DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17AE53DD-A44F-46CD-87C2-585D742E76DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17AE53DD-A44F-46CD-87C2-585D742E76DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5F2D21C-5E96-4542-990B-39F85E86E99C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5F2D21C-5E96-4542-990B-39F85E86E99C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5F2D21C-5E96-4542-990B-39F85E86E99C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5F2D21C-5E96-4542-990B-39F85E86E99C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

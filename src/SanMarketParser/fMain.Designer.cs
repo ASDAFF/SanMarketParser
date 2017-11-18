@@ -34,10 +34,10 @@
             this.bCancel = new System.Windows.Forms.Button();
             this.tcMain = new System.Windows.Forms.TabControl();
             this.tpEvents = new System.Windows.Forms.TabPage();
-            this.tpSettings = new System.Windows.Forms.TabPage();
             this.tbEvents = new System.Windows.Forms.TextBox();
-            this.lbExportPath = new System.Windows.Forms.Label();
+            this.tpSettings = new System.Windows.Forms.TabPage();
             this.tbExportPath = new System.Windows.Forms.TextBox();
+            this.lbExportPath = new System.Windows.Forms.Label();
             this.tcMain.SuspendLayout();
             this.tpEvents.SuspendLayout();
             this.tpSettings.SuspendLayout();
@@ -61,6 +61,7 @@
             this.bExport.TabIndex = 1;
             this.bExport.Text = "Экспорт пакета";
             this.bExport.UseVisualStyleBackColor = true;
+            this.bExport.Click += new System.EventHandler(this.bExport_Click);
             // 
             // bAll
             // 
@@ -107,18 +108,6 @@
             this.tpEvents.Text = "Журнал событий";
             this.tpEvents.UseVisualStyleBackColor = true;
             // 
-            // tpSettings
-            // 
-            this.tpSettings.Controls.Add(this.tbExportPath);
-            this.tpSettings.Controls.Add(this.lbExportPath);
-            this.tpSettings.Location = new System.Drawing.Point(4, 22);
-            this.tpSettings.Name = "tpSettings";
-            this.tpSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSettings.Size = new System.Drawing.Size(546, 334);
-            this.tpSettings.TabIndex = 1;
-            this.tpSettings.Text = "Параметры";
-            this.tpSettings.UseVisualStyleBackColor = true;
-            // 
             // tbEvents
             // 
             this.tbEvents.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -130,6 +119,25 @@
             this.tbEvents.Size = new System.Drawing.Size(540, 340);
             this.tbEvents.TabIndex = 0;
             // 
+            // tpSettings
+            // 
+            this.tpSettings.Controls.Add(this.tbExportPath);
+            this.tpSettings.Controls.Add(this.lbExportPath);
+            this.tpSettings.Location = new System.Drawing.Point(4, 22);
+            this.tpSettings.Name = "tpSettings";
+            this.tpSettings.Padding = new System.Windows.Forms.Padding(3);
+            this.tpSettings.Size = new System.Drawing.Size(546, 346);
+            this.tpSettings.TabIndex = 1;
+            this.tpSettings.Text = "Параметры";
+            this.tpSettings.UseVisualStyleBackColor = true;
+            // 
+            // tbExportPath
+            // 
+            this.tbExportPath.Location = new System.Drawing.Point(9, 19);
+            this.tbExportPath.Name = "tbExportPath";
+            this.tbExportPath.Size = new System.Drawing.Size(531, 20);
+            this.tbExportPath.TabIndex = 1;
+            // 
             // lbExportPath
             // 
             this.lbExportPath.AutoSize = true;
@@ -138,13 +146,6 @@
             this.lbExportPath.Size = new System.Drawing.Size(221, 13);
             this.lbExportPath.TabIndex = 0;
             this.lbExportPath.Text = "Путь к пакетам экспорта для 1С-Битрикс:";
-            // 
-            // tbExportPath
-            // 
-            this.tbExportPath.Location = new System.Drawing.Point(9, 19);
-            this.tbExportPath.Name = "tbExportPath";
-            this.tbExportPath.Size = new System.Drawing.Size(531, 20);
-            this.tbExportPath.TabIndex = 1;
             // 
             // fMain
             // 
