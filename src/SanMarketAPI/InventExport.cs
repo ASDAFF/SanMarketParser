@@ -37,6 +37,21 @@ namespace SanMarketAPI
         public FileCSV ExportFile { get; set; }
 
         /// <summary>
+        /// Экспортировать данные фрагментами
+        /// </summary>
+        public bool ExportFragments { get; set; }
+
+        /// <summary>
+        /// Размер фрагмента для выгрузки
+        /// </summary>
+        public int FragmentSize { get; set; }
+
+        /// <summary>
+        /// Граница выгрузки предыдущего фрагмента при фрагментной выгрузке.
+        /// </summary>
+        public int PreviousFragment { get; set; }
+
+        /// <summary>
         /// Глобальный экземпляр текущего класса
         /// </summary>
         public static InventExport INSTANCE
@@ -63,7 +78,10 @@ namespace SanMarketAPI
         /// Выполнение процедуры экспорта данных
         /// </summary>
         /// <param name="__filePath">Каталог с файлами обмена данными</param>
-        public async void ExportData(string __filePath)
+        /// <param name="__exportFragments">Фрагментный экспорт</param>
+        /// <param name="__fragmentSize">Размер фрагмента</param>
+        /// <param name="__previousFragment">Номер строки предыдущего фрагмента</param>
+        public async void ExportData(string __filePath, bool __exportFragments, int __fragmentSize, int __previousFragment)
         {
             // Защита от повторного запуска
             if (!IsActive)
@@ -77,6 +95,12 @@ namespace SanMarketAPI
 
                 Log = @"Начало экспорта товаров";
 
+                // Подготовка параметров фрагментной выгрузки
+                ExportFragments = __exportFragments;
+                FragmentSize = __fragmentSize;
+                PreviousFragment = __previousFragment;
+
+                // Запуск процедуры экспорта
                 await Task.Run(() => StartExport());
 
                 ExportFile.CloseFile();
@@ -111,7 +135,10 @@ namespace SanMarketAPI
                 {
                     FileRow exportRow;
                     int exportedItems = 0;
-                    while (rdrInvent.Read() && IsActive)
+                    string logMessage = @"{0} {1} из {2}";
+                    string logCaption;
+
+                    while (rdrInvent.Read() && IsActive && (!ExportFragments || exportedItems < PreviousFragment + FragmentSize))
                     {
                         List<ImageResource> imgList = GetImagesList((int)rdrInvent["Id"]);
 
@@ -127,28 +154,41 @@ namespace SanMarketAPI
 
                         FillGroups(ref exportRow, (int)rdrInvent["ParentId"]);
 
-                        // Выгрузка с учётом изображений
-                        if (imgList.Count > 0)
-                            foreach (ImageResource img in imgList)
-                                if (img.LocalImageFile != null && img.LocalImageFile.Exists)
+                        if (!ExportFragments || exportedItems >= PreviousFragment)
+                        {
+                            // Выгрузка с учётом изображений
+                            if (imgList.Count > 0)
+                            {
+                                foreach (ImageResource img in imgList)
                                 {
-                                    //string remoteFileName = @"invent_export/" + img.LocalImageFile.Name;
-                                    string remoteFileName = img.LocalImageFile.Name;
-                                    exportRow.MorePhoto = remoteFileName;
-                                    ExportFile.FileWriter.WriteLine(exportRow.ToString());
+                                    if (img.LocalImageFile != null && img.LocalImageFile.Exists)
+                                    {
+                                        //string remoteFileName = @"invent_export/" + img.LocalImageFile.Name;
+                                        string remoteFileName = img.LocalImageFile.Name;
+                                        exportRow.MorePhoto = remoteFileName;
+                                        ExportFile.FileWriter.WriteLine(exportRow.ToString());
+                                    }
                                 }
+                            }
+                            else
+                                ExportFile.FileWriter.WriteLine(exportRow.ToString());
+
+                            logCaption = @"Экспортировано";
+                        }
                         else
-                            ExportFile.FileWriter.WriteLine(exportRow.ToString());
+                            logCaption = @"Пропущено";
 
                         // Формирование сообщения пользователю
                         exportedItems++;
                         if (exportedItems % 100 == 0)
                         {
-                            string logMessage = @"Экспортировано {0} из {1}";
-                            Log = string.Format(logMessage, exportedItems, itemsCount);
+                            Log = string.Format(logMessage, logCaption, exportedItems, itemsCount);
                         }
                         
                     }
+
+                    // Фиксируем значение границы выгрузки
+                    PreviousFragment = exportedItems;
                 }
 
                 rdrInvent.Close();

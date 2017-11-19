@@ -31,6 +31,12 @@ namespace SanMarketParser
         public InventExport ExportWorker { get { return InventExport.INSTANCE; } }
 
         /// <summary>
+        /// Граница выгрузки предыдущего фрагмента при фрагментной выгрузке.
+        /// Значение сохраняется в пределах текущей сессии приложения.
+        /// </summary>
+        public int PreviousFragment { get; set; }
+
+        /// <summary>
         /// Конструктор формы
         /// </summary>
         public fMain()
@@ -41,11 +47,15 @@ namespace SanMarketParser
             tbEvents.Text = "";
             Log(@"Инициализация");
 
+            PreviousFragment = 0;
+
             // Инициализация настроек
             CurrentSettings = ParserSettings.GetSettings();
 
             // Установка параметров из настроек
             tbExportPath.Text = CurrentSettings.ExportPath;
+            cbFragment.Checked = CurrentSettings.ExportFragments;
+            nmFragmentSize.Value = (decimal)CurrentSettings.FragmentSize;
 
             // Подключение событий парсера
             Worker.OnParsingCompleted += Worker_OnParsingCompleted;
@@ -66,6 +76,8 @@ namespace SanMarketParser
             bExport.Enabled = true;
             bAll.Enabled = true;
             bCancel.Enabled = false;
+
+            PreviousFragment = ExportWorker.PreviousFragment;
 
             Log(@"Экспорт товаров завершён");
         }
@@ -117,6 +129,8 @@ namespace SanMarketParser
 
                 // Обновление настроек в классе конфигурации
                 senderForm.CurrentSettings.ExportPath = tbExportPath.Text;
+                senderForm.CurrentSettings.ExportFragments = cbFragment.Checked;
+                senderForm.CurrentSettings.FragmentSize = (int)nmFragmentSize.Value;
 
                 // Сохранение настроек
                 senderForm.CurrentSettings.SaveSettings();
@@ -193,7 +207,7 @@ namespace SanMarketParser
                 bAll.Enabled = false;
                 bCancel.Enabled = true;
 
-                ExportWorker.ExportData(tbExportPath.Text);
+                ExportWorker.ExportData(tbExportPath.Text, cbFragment.Checked, (int)nmFragmentSize.Value, PreviousFragment);
             }
         }
     }

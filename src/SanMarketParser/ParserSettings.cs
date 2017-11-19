@@ -39,6 +39,18 @@ namespace SanMarketParser
         public string ExportPath { get; set; }
 
         /// <summary>
+        /// Экспортировать данные фрагментами
+        /// </summary>
+        [DataMember]
+        public bool ExportFragments { get; set; }
+
+        /// <summary>
+        /// Размер фрагмента для выгрузки
+        /// </summary>
+        [DataMember]
+        public int FragmentSize { get; set; }
+
+        /// <summary>
         /// Конструктор класса
         /// </summary>
         public ParserSettings()
@@ -46,6 +58,8 @@ namespace SanMarketParser
             // Инициализация переменных
             ExportPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
                 @"\SanMarketParser";
+            ExportFragments = false;
+            FragmentSize = 1000;
         }
 
         /// <summary>

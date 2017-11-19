@@ -38,9 +38,13 @@
             this.tpSettings = new System.Windows.Forms.TabPage();
             this.tbExportPath = new System.Windows.Forms.TextBox();
             this.lbExportPath = new System.Windows.Forms.Label();
+            this.cbFragment = new System.Windows.Forms.CheckBox();
+            this.lbFragmentSize = new System.Windows.Forms.Label();
+            this.nmFragmentSize = new System.Windows.Forms.NumericUpDown();
             this.tcMain.SuspendLayout();
             this.tpEvents.SuspendLayout();
             this.tpSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nmFragmentSize)).BeginInit();
             this.SuspendLayout();
             // 
             // bImport
@@ -121,6 +125,9 @@
             // 
             // tpSettings
             // 
+            this.tpSettings.Controls.Add(this.nmFragmentSize);
+            this.tpSettings.Controls.Add(this.lbFragmentSize);
+            this.tpSettings.Controls.Add(this.cbFragment);
             this.tpSettings.Controls.Add(this.tbExportPath);
             this.tpSettings.Controls.Add(this.lbExportPath);
             this.tpSettings.Location = new System.Drawing.Point(4, 22);
@@ -147,6 +154,37 @@
             this.lbExportPath.TabIndex = 0;
             this.lbExportPath.Text = "Путь к пакетам экспорта для 1С-Битрикс:";
             // 
+            // cbFragment
+            // 
+            this.cbFragment.AutoSize = true;
+            this.cbFragment.Location = new System.Drawing.Point(9, 46);
+            this.cbFragment.Name = "cbFragment";
+            this.cbFragment.Size = new System.Drawing.Size(182, 17);
+            this.cbFragment.TabIndex = 2;
+            this.cbFragment.Text = "Экспортировать фрагментами";
+            this.cbFragment.UseVisualStyleBackColor = true;
+            // 
+            // lbFragmentSize
+            // 
+            this.lbFragmentSize.AutoSize = true;
+            this.lbFragmentSize.Location = new System.Drawing.Point(6, 65);
+            this.lbFragmentSize.Name = "lbFragmentSize";
+            this.lbFragmentSize.Size = new System.Drawing.Size(105, 13);
+            this.lbFragmentSize.TabIndex = 3;
+            this.lbFragmentSize.Text = "Размер фрагмента";
+            // 
+            // nmFragmentSize
+            // 
+            this.nmFragmentSize.Location = new System.Drawing.Point(9, 81);
+            this.nmFragmentSize.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.nmFragmentSize.Name = "nmFragmentSize";
+            this.nmFragmentSize.Size = new System.Drawing.Size(120, 20);
+            this.nmFragmentSize.TabIndex = 4;
+            // 
             // fMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -167,6 +205,7 @@
             this.tpEvents.PerformLayout();
             this.tpSettings.ResumeLayout(false);
             this.tpSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nmFragmentSize)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -183,5 +222,8 @@
         private System.Windows.Forms.TabPage tpSettings;
         private System.Windows.Forms.TextBox tbExportPath;
         private System.Windows.Forms.Label lbExportPath;
+        private System.Windows.Forms.NumericUpDown nmFragmentSize;
+        private System.Windows.Forms.Label lbFragmentSize;
+        private System.Windows.Forms.CheckBox cbFragment;
     }
 }
