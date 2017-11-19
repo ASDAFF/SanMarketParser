@@ -72,6 +72,9 @@ namespace SanMarketAPI
         {
             ExportFile = null;
             _isActive = false;
+            ExportFragments = false;
+            FragmentSize = 1000;
+            PreviousFragment = 0;
         }
 
         /// <summary>
@@ -144,9 +147,9 @@ namespace SanMarketAPI
 
                         exportRow = new FileRow();
                         exportRow.XmlId = (int)rdrInvent["Id"];
-                        exportRow.Name = rdrInvent["Name"].ToString().Replace(";", " ");
-                        exportRow.PreviewText = rdrInvent["ShortDescr"].ToString().Replace(";", " ").Replace("\n", " ").Replace("\r", " ");
-                        exportRow.DetailText = rdrInvent["Descr"].ToString().Replace(";", " ").Replace("\n", " ").Replace("\r", " ");
+                        exportRow.Name = rdrInvent["Name"].ToString().Replace(";", " ").Replace("\n", " ").Replace("\r", " ").Replace(@"""", " ");
+                        exportRow.PreviewText = rdrInvent["ShortDescr"].ToString().Replace(";", " ").Replace("\n", " ").Replace("\r", " ").Replace(@"""", " ");
+                        exportRow.DetailText = rdrInvent["Descr"].ToString().Replace(";", " ").Replace("\n", " ").Replace("\r", " ").Replace(@"""", " ");
                         exportRow.ArtNumber = @"SMR-" + rdrInvent["Id"].ToString().Trim();
                         exportRow.Price = (decimal)rdrInvent["Price"];
 
@@ -188,7 +191,7 @@ namespace SanMarketAPI
                     }
 
                     // Фиксируем значение границы выгрузки
-                    PreviousFragment = exportedItems;
+                    PreviousFragment = exportedItems >= itemsCount ? 0 : exportedItems;
                 }
 
                 rdrInvent.Close();
